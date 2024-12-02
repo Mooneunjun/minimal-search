@@ -18,11 +18,7 @@
             color: #333;
             background-color: #fff;
         }
-        h1 {
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        /* 검색 컨테이너 */
         .search-container {
             position: relative;
             display: flex;
@@ -34,7 +30,6 @@
             padding: 8px 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-
         /* 검색 엔진 선택 */
         .dropdown {
             position: relative;
@@ -49,11 +44,9 @@
             font-size: 0.9rem;
             cursor: pointer;
         }
-
         .dropdown-button:hover {
             background-color: #f0f0f0;
         }
-
         .dropdown-options {
             display: none;
             position: absolute;
@@ -81,7 +74,6 @@
         .dropdown.active .dropdown-options {
             display: block;
         }
-
         /* 검색 입력 필드 */
         input {
             flex: 1;
@@ -91,15 +83,6 @@
             font-size: 0.9rem;
             outline: none;
         }
-
-        /* 기본 브라우저 자동완성 비활성화 */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus {
-            -webkit-text-fill-color: inherit;
-            box-shadow: 0 0 0px 1000px white inset;
-        }
-
         /* 자동완성 */
         .autocomplete {
             position: absolute;
@@ -129,8 +112,8 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-	padding: 6px;
-	border-radius: 999px;
+            padding: 6px;
+            border-radius: 999px;
         }
         .autocomplete .delete-button svg {
             width: 16px;
@@ -140,7 +123,6 @@
         .autocomplete .delete-button:hover {
             background-color: #e0e0e0;
         }
-
         /* 검색 아이콘 버튼 */
         button.search-btn {
             width: 40px;
@@ -161,7 +143,6 @@
     </style>
 </head>
 <body>
-            <!-- <h1>Created by Moon</h1> -->
     <div class="search-container">
         <div class="dropdown" id="dropdown">
             <button class="dropdown-button" id="dropdown-button">Google</button>
@@ -190,7 +171,8 @@
         let selectedEngine = 'https://www.google.com/search?q=';
 
         // 검색 엔진 선택
-        dropdownButton.addEventListener('click', () => {
+        dropdownButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // 이벤트 버블링 중지
             dropdown.classList.toggle('active');
         });
 
@@ -198,6 +180,13 @@
             if (e.target.tagName === 'BUTTON') {
                 selectedEngine = e.target.getAttribute('data-url');
                 dropdownButton.textContent = e.target.textContent;
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // 드롭다운 외부 클릭 시 닫기
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
                 dropdown.classList.remove('active');
             }
         });
@@ -238,14 +227,22 @@
             const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
             autocomplete.innerHTML = '';
 
+            let matches = [];
+
             if (value) {
-                const matches = history.filter(item => item.toLowerCase().includes(value));
+                matches = history.filter(item => item.toLowerCase().includes(value));
+            } else {
+                matches = history.slice(0, 8); // 최근 검색한 8개 항목
+            }
+
+            if (matches.length > 0) {
                 matches.forEach(match => {
                     const suggestionDiv = document.createElement('div');
 
                     const suggestionText = document.createElement('span');
                     suggestionText.textContent = match;
-                    suggestionText.addEventListener('click', () => {
+                    suggestionText.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
                         queryInput.value = match;
                         autocomplete.innerHTML = '';
                         updateAutocompleteBorder();
@@ -253,7 +250,8 @@
 
                     const deleteButton = document.createElement('button');
                     deleteButton.classList.add('delete-button');
-                    deleteButton.addEventListener('click', (e) => {
+                    deleteButton.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         deleteHistoryItem(match);
                     });
@@ -284,21 +282,34 @@
             }
         }
 
+        // 입력 필드에 포커스가 가면 자동완성 표시
+        queryInput.addEventListener('focus', updateAutocomplete);
+
         // 입력 이벤트로 자동완성 업데이트
         queryInput.addEventListener('input', updateAutocomplete);
 
         // 입력 필드가 비활성화되면 자동완성 숨기기
-        queryInput.addEventListener('blur', () => {
+        queryInput.addEventListener('blur', (e) => {
+            // 클릭된 요소가 자동완성 내부인지 확인
             setTimeout(() => {
-                autocomplete.innerHTML = '';
-                updateAutocompleteBorder();
-            }, 200);
+                if (!autocomplete.contains(document.activeElement) && document.activeElement !== queryInput) {
+                    autocomplete.innerHTML = '';
+                    updateAutocompleteBorder();
+                }
+            }, 100);
+        });
+
+        // 자동완성 항목 클릭 시 자동완성 창 유지
+        autocomplete.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // 포커스가 다른 곳으로 이동하는 것을 방지
         });
 
         // Enter 키 누르면 검색 실행
         queryInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 performSearch();
+                autocomplete.innerHTML = '';
+                updateAutocompleteBorder();
             }
         });
     </script>
