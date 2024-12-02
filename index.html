@@ -168,7 +168,9 @@
         const queryInput = document.getElementById('query');
         const autocomplete = document.getElementById('autocomplete');
 
-        let selectedEngine = 'https://www.google.com/search?q=';
+        // 저장된 검색 엔진 불러오기 또는 기본값 설정
+        let selectedEngine = localStorage.getItem('selectedEngine') || 'https://www.google.com/search?q=';
+        dropdownButton.textContent = localStorage.getItem('selectedEngineName') || 'Google';
 
         // 검색 엔진 선택
         dropdownButton.addEventListener('click', (e) => {
@@ -181,6 +183,9 @@
                 selectedEngine = e.target.getAttribute('data-url');
                 dropdownButton.textContent = e.target.textContent;
                 dropdown.classList.remove('active');
+                // 선택한 검색 엔진 저장
+                localStorage.setItem('selectedEngine', selectedEngine);
+                localStorage.setItem('selectedEngineName', dropdownButton.textContent);
             }
         });
 
