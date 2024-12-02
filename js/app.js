@@ -95,11 +95,11 @@ function updateAutocomplete() {
 
       // 삭제 아이콘 SVG
       deleteButton.innerHTML = `
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-              `;
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      `;
 
       suggestionDiv.appendChild(suggestionText);
       suggestionDiv.appendChild(deleteButton);
@@ -158,6 +158,7 @@ autocomplete.addEventListener("mousedown", (e) => {
 // Enter 키 누르면 검색 실행
 queryInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
+    e.preventDefault(); // 기본 동작 막기
     performSearch();
     autocomplete.innerHTML = "";
     updateAutocompleteBorder();
