@@ -1,0 +1,138 @@
+/* 전체 레이아웃 */
+body {
+  font-family: "San Francisco", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #333;
+  background-color: #fff;
+}
+/* 검색 컨테이너 */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* 검색 엔진 선택 */
+.dropdown {
+  position: relative;
+  margin-right: 10px;
+}
+.dropdown-button {
+  background-color: #f9f9f9;
+  padding: 8px 12px;
+  width: 74px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+.dropdown-button:hover {
+  background-color: #f0f0f0;
+}
+.dropdown-options {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 74px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1100;
+  user-select: none;
+}
+.dropdown-options button {
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.dropdown-options button:hover {
+  background-color: #f4f4f4;
+}
+.dropdown.active .dropdown-options {
+  display: block;
+}
+/* 검색 입력 필드 */
+input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+}
+/* 자동완성 */
+.autocomplete {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+.autocomplete div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.autocomplete div:hover {
+  background-color: #f4f4f4;
+}
+.autocomplete .delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 999px;
+}
+.autocomplete .delete-button svg {
+  width: 16px;
+  height: 16px;
+  stroke: #888;
+}
+.autocomplete .delete-button:hover {
+  background-color: #e0e0e0;
+}
+/* 검색 아이콘 버튼 */
+button.search-btn {
+  width: 40px;
+  height: 40px;
+  color: #555;
+  margin-left: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+button.search-btn:hover {
+  background-color: #f0f0f0;
+}

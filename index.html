@@ -1,329 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>심플 검색</title>
-    <style>
-        /* 전체 레이아웃 */
-        body {
-            font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            color: #333;
-            background-color: #fff;
-        }
-        /* 검색 컨테이너 */
-        .search-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 8px 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        /* 검색 엔진 선택 */
-        .dropdown {
-            position: relative;
-            margin-right: 10px;
-        }
-        .dropdown-button {
-            background-color: #f9f9f9;
-            padding: 8px 12px;
-            width: 74px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-	user-select: none;
-        }
-        .dropdown-button:hover {
-            background-color: #f0f0f0;
-        }
-        .dropdown-options {
-            display: none;
-            position: absolute;
-            top: 110%;
-            left: 0;
-            width: 74px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1100;
-	user-select: none;
-        }
-        .dropdown-options button {
-            padding: 10px;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .dropdown-options button:hover {
-            background-color: #f4f4f4;
-        }
-        .dropdown.active .dropdown-options {
-            display: block;
-        }
-        /* 검색 입력 필드 */
-        input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            outline: none;
-        }
-        /* 자동완성 */
-        .autocomplete {
-            position: absolute;
-            top: 110%;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            overflow: hidden;
-        }
-        .autocomplete div {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .autocomplete div:hover {
-            background-color: #f4f4f4;
-        }
-        .autocomplete .delete-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 6px;
-            border-radius: 999px;
-        }
-        .autocomplete .delete-button svg {
-            width: 16px;
-            height: 16px;
-            stroke: #888;
-        }
-        .autocomplete .delete-button:hover {
-            background-color: #e0e0e0;
-        }
-        /* 검색 아이콘 버튼 */
-        button.search-btn {
-            width: 40px;
-            height: 40px;
-            color: #555;
-            margin-left: 10px;
-            border: none;
-            border-radius: 50%;
-            background-color: transparent;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        button.search-btn:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/500.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/700.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/900.css"
+    />
+
+    <link rel="stylesheet" href="./css/styles.css " />
+  </head>
+  <body>
     <div class="search-container">
-        <div class="dropdown" id="dropdown">
-            <button class="dropdown-button" id="dropdown-button">Google</button>
-            <div class="dropdown-options" id="dropdown-options">
-                <button data-url="https://www.google.com/search?q=">Google</button>
-                <button data-url="https://search.naver.com/search.naver?query=">Naver</button>
-                <button data-url="https://www.baidu.com/s?wd=">Baidu</button>
-            </div>
+      <div class="dropdown" id="dropdown">
+        <button class="dropdown-button" id="dropdown-button">Google</button>
+        <div class="dropdown-options" id="dropdown-options">
+          <button data-url="https://www.google.com/search?q=">Google</button>
+          <button data-url="https://search.naver.com/search.naver?query=">
+            Naver
+          </button>
+          <button data-url="https://www.baidu.com/s?wd=">Baidu</button>
         </div>
-        <input type="text" id="query" placeholder="검색어를 입력하세요" autocomplete="off">
-        <div class="autocomplete" id="autocomplete"></div>
-        <button class="search-btn" onclick="performSearch()">
-            <!-- 검색 아이콘 SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
-        </button>
+      </div>
+      <input
+        type="text"
+        id="query"
+        placeholder="검색어를 입력하세요"
+        autocomplete="off"
+      />
+      <div class="autocomplete" id="autocomplete"></div>
+      <button class="search-btn" onclick="performSearch()">
+        <!-- 검색 아이콘 SVG -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          width="24"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+        >
+          <path
+            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+          />
+        </svg>
+      </button>
     </div>
-    <script>
-        const dropdown = document.getElementById('dropdown');
-        const dropdownButton = document.getElementById('dropdown-button');
-        const dropdownOptions = document.getElementById('dropdown-options');
-        const queryInput = document.getElementById('query');
-        const autocomplete = document.getElementById('autocomplete');
 
-        // 저장된 검색 엔진 불러오기 또는 기본값 설정
-        let selectedEngine = localStorage.getItem('selectedEngine') || 'https://www.google.com/search?q=';
-        dropdownButton.textContent = localStorage.getItem('selectedEngineName') || 'Google';
-
-        // 검색 엔진 선택
-        dropdownButton.addEventListener('click', (e) => {
-            e.stopPropagation(); // 이벤트 버블링 중지
-            dropdown.classList.toggle('active');
-        });
-
-        dropdownOptions.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                selectedEngine = e.target.getAttribute('data-url');
-                dropdownButton.textContent = e.target.textContent;
-                dropdown.classList.remove('active');
-                // 선택한 검색 엔진 저장
-                localStorage.setItem('selectedEngine', selectedEngine);
-                localStorage.setItem('selectedEngineName', dropdownButton.textContent);
-            }
-        });
-
-        // 드롭다운 외부 클릭 시 닫기
-        document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // 검색 실행
-        function performSearch() {
-            const query = queryInput.value.trim();
-            if (!query) {
-                alert('검색어를 입력하세요!');
-                return;
-            }
-            saveSearchHistory(query);
-            const url = selectedEngine + encodeURIComponent(query);
-            window.open(url, '_blank');
-        }
-
-        // 검색 기록 저장
-        function saveSearchHistory(query) {
-            const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
-            if (!history.includes(query)) {
-                history.unshift(query);
-                if (history.length > 10) history.pop();
-                localStorage.setItem('searchHistory', JSON.stringify(history));
-            }
-        }
-
-        // 검색 기록 삭제
-        function deleteHistoryItem(item) {
-            let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
-            history = history.filter(historyItem => historyItem !== item);
-            localStorage.setItem('searchHistory', JSON.stringify(history));
-            updateAutocomplete();
-        }
-
-        // 자동완성 업데이트
-        function updateAutocomplete() {
-            const value = queryInput.value.trim().toLowerCase();
-            const history = JSON.parse(localStorage.getItem('searchHistory')) || [];
-            autocomplete.innerHTML = '';
-
-            let matches = [];
-
-            if (value) {
-                matches = history.filter(item => item.toLowerCase().includes(value));
-            } else {
-                matches = history.slice(0, 8); // 최근 검색한 8개 항목
-            }
-
-            if (matches.length > 0) {
-                matches.forEach(match => {
-                    const suggestionDiv = document.createElement('div');
-
-                    const suggestionText = document.createElement('span');
-                    suggestionText.textContent = match;
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.classList.add('delete-button');
-                    deleteButton.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        deleteHistoryItem(match);
-                    });
-
-                    // 삭제 아이콘 SVG
-                    deleteButton.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    `;
-
-                    suggestionDiv.appendChild(suggestionText);
-                    suggestionDiv.appendChild(deleteButton);
-
-                    // 전체 항목에 클릭 이벤트 추가
-                    suggestionDiv.addEventListener('mousedown', (e) => {
-                        // 삭제 버튼을 클릭한 경우에는 무시
-                        if (e.target.closest('.delete-button')) return;
-                        e.preventDefault();
-                        queryInput.value = match;
-                        autocomplete.innerHTML = '';
-                        updateAutocompleteBorder();
-                    });
-
-                    autocomplete.appendChild(suggestionDiv);
-                });
-            }
-
-            updateAutocompleteBorder();
-        }
-
-        // 자동완성의 border 동적 업데이트
-        function updateAutocompleteBorder() {
-            if (autocomplete.innerHTML.trim() === '') {
-                autocomplete.style.border = 'none';
-            } else {
-                autocomplete.style.border = '1px solid #ccc';
-            }
-        }
-
-        // 입력 필드에 포커스가 가면 자동완성 표시
-        queryInput.addEventListener('focus', updateAutocomplete);
-
-        // 입력 이벤트로 자동완성 업데이트
-        queryInput.addEventListener('input', updateAutocomplete);
-
-        // 입력 필드가 비활성화되면 자동완성 숨기기
-        queryInput.addEventListener('blur', (e) => {
-            // 클릭된 요소가 자동완성 내부인지 확인
-            setTimeout(() => {
-                if (!autocomplete.contains(document.activeElement) && document.activeElement !== queryInput) {
-                    autocomplete.innerHTML = '';
-                    updateAutocompleteBorder();
-                }
-            }, 100);
-        });
-
-        // 자동완성 항목 클릭 시 자동완성 창 유지
-        autocomplete.addEventListener('mousedown', (e) => {
-            e.preventDefault(); // 포커스가 다른 곳으로 이동하는 것을 방지
-        });
-
-        // Enter 키 누르면 검색 실행
-        queryInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                performSearch();
-                autocomplete.innerHTML = '';
-                updateAutocompleteBorder();
-            }
-        });
-    </script>
-</body>
+    <script src="./js/app.js"></script>
+  </body>
 </html>
