@@ -1,8 +1,11 @@
+// 필요한 요소 선택
 const dropdown = document.getElementById("dropdown");
 const dropdownButton = document.getElementById("dropdown-button");
 const dropdownOptions = document.getElementById("dropdown-options");
 const queryInput = document.getElementById("query");
 const autocomplete = document.getElementById("autocomplete");
+const searchButton = document.querySelector(".search-btn");
+const form = document.getElementById("search-form");
 
 // 저장된 검색 엔진 불러오기 또는 기본값 설정
 let selectedEngine =
@@ -36,6 +39,7 @@ document.addEventListener("click", (e) => {
 
 // 검색 실행
 function performSearch() {
+  console.log("performSearch called");
   const query = queryInput.value.trim();
   if (!query) {
     alert("검색어를 입력하세요!");
@@ -45,6 +49,12 @@ function performSearch() {
   const url = selectedEngine + encodeURIComponent(query);
   window.open(url, "_blank");
 }
+
+// 폼의 submit 이벤트 처리
+form.addEventListener("submit", (e) => {
+  e.preventDefault(); // 기본 동작 막기
+  performSearch();
+});
 
 // 검색 기록 저장
 function saveSearchHistory(query) {
@@ -153,14 +163,4 @@ queryInput.addEventListener("blur", (e) => {
 // 자동완성 항목 클릭 시 자동완성 창 유지
 autocomplete.addEventListener("mousedown", (e) => {
   e.preventDefault(); // 포커스가 다른 곳으로 이동하는 것을 방지
-});
-
-// Enter 키 누르면 검색 실행
-queryInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault(); // 기본 동작 막기
-    performSearch();
-    autocomplete.innerHTML = "";
-    updateAutocompleteBorder();
-  }
 });

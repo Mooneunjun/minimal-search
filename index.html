@@ -4,22 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>심플 검색</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/500.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/700.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fontsource/san-francisco/900.css"
-    />
 
     <link rel="stylesheet" href="./css/styles.css " />
   </head>
@@ -35,27 +19,36 @@
           <button data-url="https://www.baidu.com/s?wd=">Baidu</button>
         </div>
       </div>
-      <input
-        type="text"
-        id="query"
-        placeholder="검색어를 입력하세요"
-        autocomplete="off"
-      />
+
+      <form id="search-form">
+        <input
+          type="text"
+          id="query"
+          placeholder="검색어를 입력하세요"
+          autocomplete="off"
+        />
+
+        <!-- 여기서 type="button"을 추가합니다 -->
+        <button type="submit" class="search-btn">
+          <!-- 검색 아이콘 SVG -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="24"
+            width="24"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5
+            A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l
+            .27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5
+            14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5
+            14 7.01 14 9.5 11.99 14 9.5 14z"
+            />
+          </svg>
+        </button>
+      </form>
       <div class="autocomplete" id="autocomplete"></div>
-      <button class="search-btn" onclick="performSearch()">
-        <!-- 검색 아이콘 SVG -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24"
-          width="24"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-        >
-          <path
-            d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-          />
-        </svg>
-      </button>
     </div>
 
     <script src="./js/app.js"></script>

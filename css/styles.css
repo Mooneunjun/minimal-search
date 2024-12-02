@@ -78,7 +78,15 @@ body {
   display: block;
 }
 /* 검색 입력 필드 */
-input {
+#search-form {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+/* 검색 입력 필드 */
+#search-form input {
   flex: 1;
   padding: 10px 12px;
   border: 1px solid #ccc;
@@ -86,6 +94,11 @@ input {
   font-size: 0.9rem;
   outline: none;
 }
+
+#search-form input:focus {
+  border-color: #666;
+}
+
 /* 자동완성 */
 .autocomplete {
   position: absolute;
