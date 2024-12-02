@@ -246,12 +246,6 @@
 
                     const suggestionText = document.createElement('span');
                     suggestionText.textContent = match;
-                    suggestionText.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        queryInput.value = match;
-                        autocomplete.innerHTML = '';
-                        updateAutocompleteBorder();
-                    });
 
                     const deleteButton = document.createElement('button');
                     deleteButton.classList.add('delete-button');
@@ -271,6 +265,17 @@
 
                     suggestionDiv.appendChild(suggestionText);
                     suggestionDiv.appendChild(deleteButton);
+
+                    // 전체 항목에 클릭 이벤트 추가
+                    suggestionDiv.addEventListener('mousedown', (e) => {
+                        // 삭제 버튼을 클릭한 경우에는 무시
+                        if (e.target.closest('.delete-button')) return;
+                        e.preventDefault();
+                        queryInput.value = match;
+                        autocomplete.innerHTML = '';
+                        updateAutocompleteBorder();
+                    });
+
                     autocomplete.appendChild(suggestionDiv);
                 });
             }
